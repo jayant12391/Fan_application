@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fan Simulator</title>
+</head>
+<body>
+    <h1>Ceiling Fan Simulator</h1>
+    <div>
+        <button onclick="toggleFan()">Toggle Fan</button>
+        <select id="speedLevel" onchange="setSpeedLevel()">
+            <option value="1">Speed 1</option>
+            <option value="2">Speed 2</option>
+            <option value="3">Speed 3</option>
+            <option value="4">Speed 4</option>
+            <option value="5">Speed 5</option>
+        </select>
+    </div>
+    <script>
+        let fanStatus = false;
+        let speedLevel = 1;
+
+        function toggleFan() {
+            fanStatus = !fanStatus;
+            sendFanData();
+        }
+
+        function setSpeedLevel() {
+            speedLevel = document.getElementById('speedLevel').value;
+            sendFanData();
+        }
+
+        function sendFanData() {
+            fetch('/fan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: fanStatus, speed_level: speedLevel }),
+            });
+        }
+    </script>
+</body>
+</html>

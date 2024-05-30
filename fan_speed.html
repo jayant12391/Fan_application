@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Energy Consumption</title>
+</head>
+<body>
+    <h1>Check Energy Consumption</h1>
+    <form id="consumptionForm">
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" id="start_time" name="start_time">
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" id="end_time" name="end_time">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('consumptionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const startTime = document.getElementById('start_time').value;
+            const endTime = document.getElementById('end_time').value;
+            
+            fetch(`/power-consumption?start_time=${startTime}&end_time=${endTime}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = 
+                        `Power Consumption: ${data.power_consumption} Watts<br>Energy Consumption: ${data.energy_consumption} Wh`;
+                });
+        });
+    </script>
+</body>
+</html>
